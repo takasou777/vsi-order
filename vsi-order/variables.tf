@@ -4,7 +4,7 @@
 
 variable "region" {
   type        = string
-  default     = "jp-tok"
+  default     = "jp-osa"
   description = "Region"
 }
 
@@ -12,7 +12,7 @@ variable "region" {
  Resource Group, Tags
  *****************************************/
 variable "resource_group_name" {
-  default     = "demo-common"
+  default     = "stakamura"
   description = "リソースグループ名"
 }
 
@@ -22,9 +22,9 @@ variable "tags" {
   description = "タグ名"
 }
 
-variable "ssh_name" {
-  type        = string
-  default     = "takamura-key"
+variable "ssh_key_names" {
+  type        = list(string)
+  default     = ["takamura-key", "satokota-key"]
   description = "sshキー名"
 }
 /******************************************
@@ -41,22 +41,25 @@ variable "vpc_name" {
  *****************************************/
 variable "subnet_name" {
   type        = string
-  default     = "iac-vpc-subnet-zone1"
-  description = "vpc名"
+  default     = "vpc-takamura-subnet1-1"
+  description = "subnet名"
 }
 
 
-variable "debug-sg-name" {
+variable "sg_name" {
   type        = string
-  default     = "lamp-sg"
+  default     = "vpc-takamura-security-group"
   description = "security group名"
 }
 /******************************************
  VSI
  *****************************************/
-# image names can be determined with the cli command `ibmcloud is images`
+variable "vsi_name" {
+  default = "takamura-tmp-instance"
+  description = "VSI名"
+}
+
 variable "image_name" {
-  description = "OS image for VSI deployments. Only tested with Centos"
-  # default     = "ibm-redhat-9-0-minimal-amd64-1"
   default     = "ibm-centos-7-9-minimal-amd64-8"
+  description = "OS イメージ名"
 }

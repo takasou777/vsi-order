@@ -29,15 +29,16 @@ data "ibm_is_image" "os" {
 /******************************************
  ssh
  *****************************************/
-data "ibm_is_ssh_key" "takamura-key" {
-  name = var.ssh_name
+data "ibm_is_ssh_key" "ssh_keys" {
+  count = length(var.ssh_key_names)
+  name = var.ssh_key_names[count.index]
 }
 
 /******************************************
  Security group
  *****************************************/
-data "ibm_is_security_group" "debug-sg" {
-  name = var.debug-sg-name
+data "ibm_is_security_group" "sg" {
+  name = var.sg_name
 }
 
 /******************************************
@@ -45,27 +46,19 @@ data "ibm_is_security_group" "debug-sg" {
  *****************************************/
 
 resource "ibm_is_instance" "virtual_instance" {
-  name    = "iac-debug-instance"
+  name    = var.vsi_name
   vpc     = data.ibm_is_vpc.vpc.id
   zone    = format("%s-1", var.region)
-  keys    = [data.ibm_is_ssh_key.takamura-key.id]
+  keys    = data.ibm_is_ssh_key.ssh_keys.*.id
   image   = data.ibm_is_image.os.id
   profile = "bx2-2x8"
   metadata_service_enabled  = false
-  user_data = "${file("./install.yaml")}"
-
-  /*
-  user_data      = templatefile("${path.module}/install.yaml", {
-    log_resource_key         = ibm_resource_key.log_resourceKey.id
-    monitoring_resource_key  = ibm_resource_key.monitoring_resourceKey.id
-  })
-  */
   resource_group = data.ibm_resource_group.this.id
 
 
   primary_network_interface {
     subnet = data.ibm_is_subnet.zone1.id
-    security_groups = [data.ibm_is_security_group.debug-sg.id]
+    security_groups = [data.ibm_is_security_group.sg.id]
     allow_ip_spoofing = false
   }
 }
