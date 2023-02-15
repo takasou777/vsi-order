@@ -1,0 +1,24 @@
+#cloud-config
+package_update: true
+packages:
+  - git
+    #- httpd
+    #- mariadb-server
+    #- mariadb
+    #- php
+    #- php-mysqlnd
+runcmd:
+  - git clone "https://github.com/takasou777/php-test.git"
+    #- systemctl start httpd.service
+    #- systemctl enable httpd.service
+    #- systemctl start mariadb
+    #- systemctl enable mariadb.service
+    #- cp /root/php-test/* /var/www/html
+    #- chmod 744 /var/www/html/*
+    #- sudo rpm --import https://repo.logdna.com/logdna.gpg
+    #- echo -e "[logdna]\nname=LogDNA packages\nbaseurl=https://repo.logdna.com/el6/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.logdna.com/logdna.gpg" | sudo tee /etc/yum.repos.d/logdna.repo
+    #- sudo yum -y install logdna-agent
+    #- logdna-agent -k 013b9601afbb5f66186b5641138739be
+    #- systemctl start logdna-agent
+    #- systemctl enable logdna-agent
+    #- curl -sL https://ibm.biz/install-sysdig-agent | sudo bash -s -- -a b5a1ae50-5256-43fc-9b00-1a693fef3c9a -c ingest.jp-tok.monitoring.cloud.ibm.com --collector_port 6443 --secure true -ac "sysdig_capture_enabled":" false"

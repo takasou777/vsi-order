@@ -1,0 +1,6 @@
+write_files:
+  - path: /var/www/html/info.php
+    content: |-
+      <?php
+      phpinfo();
+      ?>
